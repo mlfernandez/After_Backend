@@ -20,23 +20,36 @@ module.exports = {
       email: {
         type: Sequelize.STRING
       },
-      Password: {
+      password: {
         type: Sequelize.STRING
       },
-      Password2: {
+      password2: {
         type: Sequelize.STRING
       },
-      Photo: {
-        type: Sequelize.BLOB
+      photo: {
+        type: Sequelize.BLOB,
+        allowNull: true
       },
       profile: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        fields: ['admin', 'user', 'tutor'],
+        allowNull: false,
+        defaultValue: "user"
       },
       specialization: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: true,
       },
       isActive: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
+      isAdmin: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
+      token: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
