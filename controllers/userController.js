@@ -9,6 +9,7 @@ class Person {
 
     async newUser(user) {
         user.password = await bcrypt.hash(user.password, 10);
+        user.password2 = await bcrypt.hash(user.password2, 10);
         
     
         //Creamos una token que enviamos por mail para activar
@@ -17,7 +18,7 @@ class Person {
         for (let i = 0; i < 25; i++) {
             token += characters[Math.floor(Math.random() * characters.length )];
         }
-        console.log(token)
+    
     
         user = {
             name : user.name,
@@ -26,16 +27,28 @@ class Person {
             email: user.email,
             password: user.password,
             password2: user.password2,
+            token: token
           }
           
-        console.log(user)
     
-        let usuario = await User.create(user);
-    
-        //Llamamos a la funcion para enviar el correo al usuario.
-        await nodemailer.sendConfirmationEmail(user.name, user.email, token);
-    
-        return usuario;
+          // Ver si el email esta registrado
+        let checkUser = await userController.findByEmail(emailCheck);
+
+          // Si no existe, mostrar mensaje
+        if (checkUser === null) {
+
+          let usuario = await User.create(user);
+      
+          //Llamamos a la funcion para enviar el correo al usuario.
+          await nodemailer.sendConfirmationEmail(user.name, user.email, token);
+      
+          return usuario;
+          
+        } else {
+
+          throw new Error("El usuario ya existe.");
+        }
+        
     
       }
     
@@ -45,80 +58,48 @@ class Person {
     
      //Función que recibe token de email y activa la cuenta del usuario.
      async updateActive(token) {
-       console.log(token);
+      
       let user = await User.findOne({where:{token}});
-      console.log(user);
+    
       let usuario = await User.update(
           {
               isActive: true,
             },
             {where: {id: user.id}}
       );
-      let resultado = "La cuenta se ha activado correctamente. Por favor, ve a la web de Smile para ingresar.";
+      let resultado = "La cuenta se ha activado correctamente. Por favor, regrese a la web de After para ingresar.";
       return resultado;
     
     }    
 
+    // encontrar todos los usuarios
   async findAllUsers() {
     return User.findAll();
   }
+
+    // encontrar usuarios por email
   async findByEmail(email) {
     return User.findOne({
       where: { email },
     });
   }
 
-  async findByDni(dni) {
-    return User.findOne({
-      where: { dni },
-    });
-  }
-  
-    async findByUserId(data) {
-      return User.findByPk(data);
-
-  }
-
- 
-
-  // para cambiar la suscripcion 
-  async updateSuscription(body) {
-
-   User.update(
-    
-      //Datos que cambiamos
-    {
-      lastSuscriptionBegin: body.lastSuscriptionBegin,
-      lastSuscriptionEnd: body.lastSuscriptionEnd,
-    },
-    { where: { id: body.idUser } }
-  )
-
-    let resultado = User.findByPk(body.idUser);
-    console.log(resultado, "controller")
-
-    return resultado;
-    
+    // encontrar usuarios por id
+  async findByUserId(data) {
+    return User.findByPk(data);
 
 }
-
+    // modificar datos usuario
   async modifyUser(cuerpoDeDatos) {
     console.log(cuerpoDeDatos)
     await User.update(
 
       //datos que cambiamos
       {
-
-        /* creditCardNumber: cuerpoDeDatos.creditCardNumber, */
-        creditCardNumber: await bcryptjs.hash(cuerpoDeDatos.creditCardSecureCodeNumber, 5),
-        creditCardName: cuerpoDeDatos.creditCardName,
-        creditCardExpDate: cuerpoDeDatos.creditCardExpDate,
-        creditCardSecureCodeNumber: await bcryptjs.hash(cuerpoDeDatos.creditCardSecureCodeNumber, 5),
-      /*   creditCardSecureCodeNumber: cuerpoDeDatos.creditCardSecureCodeNumber, */
-
-        
-
-
+        email: cuerpoDeDatos.email,
+        password: cuerpoDeDatos.password,
+        password2: cuerpoDeDatos.password2,
+        specialization: cuerpoDeDatos.specialization,
       },
       //donde
       { where: { id: cuerpoDeDatos.idUser } }
@@ -130,13 +111,12 @@ class Person {
     return resultado;
   }
 
+    // eliminar usuario
   async deleteUser(id) {
     return User.destroy({ where: { id: id } });
   }
 
-  
-
-
 }
+
 let userController = new Person();
 module.exports = userController;

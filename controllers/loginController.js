@@ -9,7 +9,6 @@ class LoginController {
 
             // Ver si el email esta registrado
         let user = await userController.findByEmail(emailCheck);
-        console.log(user, "hay usuario")
 
             // Si no existe, mostrar mensaje
         if (user == null) {
@@ -31,13 +30,12 @@ class LoginController {
             
         }
 
-  
-
         let payload = {
             userId : user.id,
             createdAt: new Date(),
             admin: user.profile
         };
+
 
         return jwt.sign(payload,secret);
 

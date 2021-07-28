@@ -29,8 +29,9 @@ router.get("/", admin, async (req, res) => {
     });
   }
 });
+
 // Find users by email
-router.get("/email/:email", async (req, res) => {
+router.get("/email/:email", admin, async (req, res) => {
   try {
     let email = req.params.email;
     res.json(await userController.findByEmail(email));
@@ -42,21 +43,8 @@ router.get("/email/:email", async (req, res) => {
 });
 
 
-// Find users by email
-router.get("/dni/:dni", async (req, res) => {
-  try {
-    let dni = req.params.dni;
-    res.json(await userController.findByDni(dni));
-  } catch (err) {
-    return res.status(500).json({
-      message: err.message,
-    });
-  }
-});
-
-
 // Find users by ID
-router.get("/id/:id", async (req, res) => {
+router.get("/id/:id", admin, async (req, res) => {
   try {
     const id = req.params.id;
 
@@ -69,7 +57,7 @@ router.get("/id/:id", async (req, res) => {
 });
 
 // Modify one User
-router.post("/update", async (req, res) => { 
+router.post("/update", authenticate, async (req, res) => { 
   try {
     const cuerpoDeDatos = req.body;
     res.json(await userController.modifyUser(cuerpoDeDatos));
@@ -79,6 +67,7 @@ router.post("/update", async (req, res) => {
     });
   }
 });
+
 // Delete Users
 router.delete("/:id", admin, async (req, res) => { 
   try {
@@ -99,18 +88,6 @@ router.get("/confirm/:confirmationCode", async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       message: err.message,
-    });
-  }
-});
-
-router.post("/suscription", async (req, res) => {
-  try {
-    const body = req.body;
-    console.log(req.body);
-    res.json(await userController.updateSuscription(body));
-  } catch (err) {
-    return res.status(500).json({
-      mensaje: err.message,
     });
   }
 });
