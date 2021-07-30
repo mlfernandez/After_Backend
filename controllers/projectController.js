@@ -1,9 +1,7 @@
 const axios = require("axios");
-const { User, Project, Category } = require("../models");
+const { Project, Category } = require("../models");
 const router = require("../routes/projectRouter");
-const bcrypt = require('bcrypt');
-const nodemailer = require('../config/nodemailerConfig.js');
-const moment = require("moment");
+
 
 
 
@@ -28,7 +26,7 @@ class Proyectos {
 
 
     async modifyProject(newAtributes) {
-        console.log(newAtributes)
+        
         await Project.update(
     
           //datos que cambiamos
@@ -50,6 +48,11 @@ class Proyectos {
         return resultado;
       }
 
+    // Eliminar proyecto
+
+    async deleteProject(idProject) {
+      return Project.destroy({ where: { id: idProject } });
+  }
 
 }
 

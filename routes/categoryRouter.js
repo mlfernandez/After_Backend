@@ -1,17 +1,17 @@
 const router = require("express").Router();
 const authenticate = require("../middleware/authenticate");
-const projectController = require("../controllers/projectController");
+const categoryController = require("../controllers/categoryController");
 const admin = require("../middleware/admin");
 
 
 
-// Crear un nuevo proyecto
+// Crear una nueva categoria
 
 router.post("/", admin, async (req, res) => {
     try {
-      const project = req.body;
+      const category = req.body;
   
-      res.json(await projectController.createProject(project));
+      res.json(await categoryController.createCategory(category));
     } catch (err) {
       return res.status(500).json({
         message: err.message,
@@ -20,12 +20,12 @@ router.post("/", admin, async (req, res) => {
   });
 
 
-// Buscar Proyectos por ID
+// Buscar Categoria por id
 
 router.post('/id', admin, async (req, res) => {
   try{
-      const idProject = req.body.idProject;
-      res.json(await projectController.findByProjectId(idProject));
+      const idCategory = req.body.idCategory;
+      res.json(await categoryController.findByCategoryId(idCategory));
   }catch (err) {
       return res.status(500).json({
           message: err.message
@@ -34,12 +34,12 @@ router.post('/id', admin, async (req, res) => {
 })  
 
 
-// Modificar proyecto
+// Modificar categoria
 
 router.put('/', admin, async (req, res) => {
   try {
       const newAtributes = req.body;
-      res.json(await projectController.modifyProject(newAtributes));
+      res.json(await categoryController.modifyCategory(newAtributes));
   }catch (err) {
       return res.status(500).json({
           message: err.message
@@ -47,17 +47,18 @@ router.put('/', admin, async (req, res) => {
   }
 });
 
-// Eliminar proyecto
+// Eliminar categoría
 
 router.delete('/:id', admin, async (req, res) => {
-  try {
-      const idProject = req.params.id;
-      res.json(await projectController.deleteProject(idProject));
-  }catch (err) {
-      return res.status(500).json({
-          message: err.message
-      });
-  }
+    try {
+        const idCategory = req.params.id;
+        res.json(await categoryController.deleteCategory(idCategory));
+    }catch (err) {
+        return res.status(500).json({
+            message: err.message
+        });
+    }
 });
+
 
   module.exports = router;
