@@ -96,6 +96,9 @@ class Person {
 
       //datos que cambiamos
       {
+        name: cuerpoDeDatos.name,
+        lastName: cuerpoDeDatos.lastName,
+        lastName2: cuerpoDeDatos.lastName2,
         email: cuerpoDeDatos.email,
         password: cuerpoDeDatos.password,
         password2: cuerpoDeDatos.password2,
