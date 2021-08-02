@@ -15,6 +15,12 @@ class Proyectos {
 
     }
 
+    // Buscar todos los proyectos
+
+    async findAllProject() {
+      return Project.findAll();
+    }
+
     // Buscar proyecto por Id
 
     async findByProjectId(idProject) {

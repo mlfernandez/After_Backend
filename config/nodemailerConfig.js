@@ -26,6 +26,19 @@ module.exports.sendConfirmationEmail = (name, email, confirmationCode) => {
   }).catch(err => console.log(err));
 };
 
+module.exports.sendLostPasswordEmail = (name, email) => {
+  transport.sendMail({
+    from: user,
+    to: email,
+    subject: "After - Cambio de contraseña.",
+    html: `<h1>Correo de cambio de contraseña</h1>
+        <h2>Hola ${name}</h2>
+        <p>Recientemente has solicitado modificar tu contraseña, si no es así omite este correo, en caso que quieras modificarla accede a este enlace.
+        <a href=http://localhost:3006/user/changepassword> Cambiar la contraseña.</a>
+        </div>`,
+  }).catch(err => console.log(err));
+};
+
 /* module.exports.sendConfirmationEmailNewClass = (name, email, roomName, roomDateStart) => {
   console.log("Nombre del usuario: ", name);
   console.log("Nombre del email", email);

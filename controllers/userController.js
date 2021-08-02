@@ -119,6 +119,44 @@ class Person {
     return User.destroy({ where: { id: id } });
   }
 
+  // desactivar usuario
+
+
+/*   // modificar la contraseña
+
+  async modifyPassword (body) {
+
+    let user = await userController.findByUserId(body.idUser);
+
+    let newPassword = bcrypt.hashSync( body.newPassword, 10);
+    let newPassword2 = bcrypt.hashSync( body.newPassword2, 10);
+
+    let updatepassword = await User.update(
+        {password: newPassword,
+        password2: newPassword2},
+  
+        {where: {id: body.idUser}}
+    )
+
+    return User.findOne({
+        where: {id : body.idUser}
+    });
+
+}
+
+ // olvido la contraseña
+
+ async lostPassword (body) {
+
+  let user = await userController.findByUserId(body.idUser);
+
+   //Llamamos a la funcion para enviar el correo al usuario.
+   await nodemailer.sendLostPasswordEmail(user.name, user.email);
+      
+   return user;
+
+} */
+
 }
 
 let userController = new Person();

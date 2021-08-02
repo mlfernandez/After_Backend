@@ -20,6 +20,18 @@ router.post("/", admin, async (req, res) => {
   });
 
 
+// Buscar todos los proyectos
+
+router.get("/", admin, async (req, res) => {
+  try {
+    res.json(await projectController.findAllProject());
+  } catch (err) {
+    return res.status(500).json({
+      message: err.message,
+    });
+  }
+});  
+
 // Buscar Proyectos por ID
 
 router.post('/id', admin, async (req, res) => {

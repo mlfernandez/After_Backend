@@ -5,7 +5,7 @@ const authenticate = require("../middleware/authenticate");
 
 //CRUD
 
-// Create new user
+// Crear un usuario nuevo
 router.post("/", async (req, res) => {
     try {
       const body = req.body;
@@ -19,7 +19,7 @@ router.post("/", async (req, res) => {
   });
 
 
-// Find all users
+// Buscar todos los usuarios
 router.get("/", admin, async (req, res) => {
   try {
     res.json(await userController.findAllUsers());
@@ -30,7 +30,7 @@ router.get("/", admin, async (req, res) => {
   }
 });
 
-// Find users by email
+// Buscar usuario por email
 router.get("/email/:email", admin, async (req, res) => {
   try {
     let email = req.params.email;
@@ -43,7 +43,7 @@ router.get("/email/:email", admin, async (req, res) => {
 });
 
 
-// Find users by ID
+// Buscar usuario por id
 router.get("/id/:id", admin, async (req, res) => {
   try {
     const id = req.params.id;
@@ -56,7 +56,7 @@ router.get("/id/:id", admin, async (req, res) => {
   }
 });
 
-// Modify one User
+// Modificar usuario
 router.post("/update", authenticate, async (req, res) => { 
   try {
     const cuerpoDeDatos = req.body;
@@ -68,7 +68,7 @@ router.post("/update", authenticate, async (req, res) => {
   }
 });
 
-// Delete Users
+// Eliminar usuario
 router.delete("/:id", admin, async (req, res) => { 
   try {
     const id = req.params.id;
@@ -80,7 +80,7 @@ router.delete("/:id", admin, async (req, res) => {
   }
 });
 
-// Mail confirmation
+// Mail de confirmacion
 router.get("/confirm/:confirmationCode", async (req, res) => {
   try {
     token = req.params.confirmationCode;
@@ -92,5 +92,28 @@ router.get("/confirm/:confirmationCode", async (req, res) => {
   }
 });
 
+/* // Usuario modificar contraseña
+router.put('/changepassword', authenticate, async (req,res) => {
+  try{
+      const body = req.body;
+      res.json(await userController.modifyPassword(body)); 
+  }catch (err) {
+      return res.status(500).json({
+          message: err.message
+      });
+  }
+})
+
+// Usuario modificar contraseña
+router.put('/emailchangepassword', authenticate, async (req,res) => {
+  try{
+      const body = req.body;
+      res.json(await userController.lostPassword(body)); 
+  }catch (err) {
+      return res.status(500).json({
+          message: err.message
+      });
+  }
+}) */
 
 module.exports = router;
